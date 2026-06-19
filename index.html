@@ -6,6 +6,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SplitApp</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+const supabase = window.supabase.createClient(
+  "https://ddypvmxbtileaqpafvkx.supabase.co",
+  "sb_publishable_fDCqoOdCWVmsPlJJ4ztCdg_vFNBSbAv"
+);
+
+  
+<div class="card">
+  <h3>Logga in</h3>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Lösenord">
+  <button onclick="login()">Logga in</button>
+</div>
+
+  
 <style>
 body {
   font-family: Arial, sans-serif;
