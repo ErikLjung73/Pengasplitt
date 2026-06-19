@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SplitApp</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+input, select, button {
+  padding: 8px;
+  margin: 5px;
+}
+button {
+  background: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+button:hover {
+  background: #0051a3;
+}
+.done {
+  text-decoration: line-through;
+  color: gray;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💸 SplitApp</h1>
+
+<div class="card">
+<h3>Personer</h3>
+<input id="person" placeholder="Namn">
+<button onclick="addPerson()">Lägg till</button>
+<div id="people"></div>
+</div>
+
+<div class="card">
+<h3>Nytt utlägg</h3>
+<input id="title" placeholder="Beskrivning">
+<input id="amount" type="number" placeholder="Belopp">
+<select id="payer"></select>
+<button onclick="addExpense()">Lägg till</button>
+</div>
+
+<div class="card">
+<h3>Utlägg</h3>
+<table>
+<thead>
+<tr>
+<th>Beskrivning</th>
+<th>Belopp</th>
+<th>Betalat av</th>
+</tr>
+</thead>
+<tbody id="expensesBody"></tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>Saldon</h3>
+<div id="balances"></div>
+</div>
+
+<div class="card">
+<h3>Vem ska betala vem?</h3>
+<div id="settlements"></div>
+</div>
+
+<script>
+let people = [];
+let expenses = [];
+let completed = [];
+
+function addPerson() {
+  const p = document.getElementById('person').value.trim();
+  if (!p) return;
+  people.push(p);
+  document.getElementById('person').value = '';
+  render();
+}
+
+function addExpense() {
+  if (!people.length) return alert('Lägg till personer först');
+
+  const title = document.getElementById('title').value || 'Utlägg';
+  const amount = parseFloat(document.getElementById('amount').value);
+  const payer = document.getElementById('payer').value;
+
+  if (!amount || amount <= 0) return;
+
+  expenses.push({ title, amount, payer });
+
+  document.getElementById('title').value = '';
+  document.getElementById('amount').value = '';
+
+  render();
+}
+
+function render() {
+  document.getElementById('people').textContent = people.join(', ');
+
+  const payer = document.getElementById('payer');
+  payer.innerHTML = people.map(p => `<option>${p}</option>`).join('');
+
+  document.getElementById('expensesBody').innerHTML =
+    expenses.map(e =>
+      `<tr>
+        <td>${e.title}</td>
+        <td>${e.amount}</td>
+        <td>${e.payer}</td>
+      </tr>`
+    ).join('');
+
+  calculate();
+}
+
+function calculate() {
+  const balances = {};
+  people.forEach(p => balances[p] = 0);
+
+  expenses.forEach(e => {
+    const share = e.amount / people.length;
+    balances[e.payer] += e.amount;
+    people.forEach(p => balances[p] -= share);
+  });
+
+  let html = '<table><tr><th>Person</th><th>Saldo</th></tr>';
+
+  Object.entries(balances).forEach(([p, b]) => {
+    html += `<tr><td>${p}</td><td>${b.toFixed(2)} kr</td></tr>`;
+  });
+
+  html += '</table>';
+  document.getElementById('balances').innerHTML = html;
+}
+</script>
+
+</body>
+</html>
