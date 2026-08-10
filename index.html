@@ -13,6 +13,20 @@
   "https://ddypvmxbtileaqpafvkx.supabase.co",
   "sb_publishable_fDCqoOdCWVmsPlJJ4ztCdg_vFNBSbAv"
 );
+
+console.log("Supabase initierad", supabase);
+
+async function testConnection() {
+  const { data, error } = 
+    await supabase
+    .from('groups')
+    .select('*');
+  console.log(data);
+  console.log(error);
+}
+
+testConnection();
+
 </script>
   
 <div class="card">
