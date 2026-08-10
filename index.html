@@ -9,7 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
-  const supabase = window.supabase.createClient(
+  const supabaseClient = window.supabase.createClient(
   "https://ddypvmxbtileaqpafvkx.supabase.co",
   "sb_publishable_fDCqoOdCWVmsPlJJ4ztCdg_vFNBSbAv"
 );
@@ -19,7 +19,7 @@ console.log("Supabase initierad", supabase);
 
 async function testConnection() {
   const { data, error } = 
-    await supabase
+    await supabaseClient
     .from('groups')
     .select('*');
   console.log(data);
@@ -28,7 +28,7 @@ async function testConnection() {
 testConnection();
 
 async function createGroup() {
-const { data, error } = await supabase
+const { data, error } = await supabaseClient
 .from('groups')
 .insert({
 name: 'Testgrupp'
