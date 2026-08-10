@@ -27,8 +27,7 @@ async function testConnection() {
     await supabaseClient
     .from('groups')
     .select('*');
-  console.log(data);
-  console.log(error);
+  console.log('RESULT:', result);
 }
 testConnection();
 
