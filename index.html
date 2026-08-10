@@ -15,7 +15,9 @@
 );
 
   
-console.log("Supabase initierad", window.supabase);
+console.log("Supabase initierad", supabase);
+console.log("URL:", supabase.supabaseURL);
+
 
 async function testConnection() {
   const { data, error } = 
