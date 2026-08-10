@@ -31,7 +31,8 @@ async function createGroup() {
 const { data, error } = await supabaseClient
 .from('groups')
 .insert({
-name: 'Testgrupp'
+  name: 'Testgrupp',
+  owner_id: 'Erik'
 });
 console.log(data);
 console.log(error);
