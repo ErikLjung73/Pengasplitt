@@ -24,9 +24,19 @@ async function testConnection() {
   console.log(data);
   console.log(error);
 }
-
 testConnection();
 
+async function createGroup() {
+const { data, error } = await supabase
+.from('groups')
+.insert({
+name: 'Testgrupp'
+});
+console.log(data);
+console.log(error);
+}
+createGroup();
+  
 </script>
   
 <div class="card">
