@@ -147,18 +147,22 @@ async function createGroup() {
 }
 
 async function loadGroups() {
-  const { data, error } = await supabaseClient
-    .from('groups')
-    .select('*');
-  const list = document.getElementById('groupList');
-  list.innerHTML = '';
-  data.forEach(group => {
-    const li = document.createElement('li');
-    li.textContent = group.name;
-    list.appendChild(li);
-  });
+const { data, error } = await supabaseClient
+.from('groups')
+.select('*');
+const list = document.getElementById('groupList');
+list.innerHTML = '';
+if (error) {
+console.log(error);
+return;
 }
-loadGroups();
+ 
+data.forEach(group => {
+const li = document.createElement('li');
+li.textContent = group.name;
+list.appendChild(li);
+});
+}
   
 function addPerson() {
   const p = document.getElementById('person').value.trim();
