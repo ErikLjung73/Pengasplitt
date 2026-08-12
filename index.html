@@ -29,17 +29,6 @@ async function testConnection() {
   console.log('RESULT:', result);
 }
 testConnection();
-
-async function createGroup() {
-const { data, error } = await supabaseClient
-.from('groups')
-.insert({
-  name: 'Testgrupp'
-});
-console.log(data);
-console.log(error);
-}
-createGroup();
   
 </script>
   
@@ -150,7 +139,7 @@ async function createGroup() {
     .insert({
       name: name
     })
-    select();
+    .select();
   console.log(data, error);
   if (!error) {
     alert('Grupp skapad!');
@@ -160,7 +149,7 @@ async function createGroup() {
 async function loadGroups() {
   const { data, error } = await supabaseClient
     .from('groups')
-    select('*');
+    .select('*');
   const list = document.getElementById('groupList');
   list.innerHTML = '';
   data.forEach(group => {
