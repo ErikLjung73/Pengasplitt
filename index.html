@@ -133,17 +133,24 @@ let expenses = [];
 let completed = [];
 
 async function createGroup() {
-  const name = document.getElementById('groupName').value;
-  const { data, error } = await supabaseClient
-    .from('groups')
-    .insert({
-      name: name
-    })
-    .select();
-  console.log(data, error);
-  if (!error) {
-    alert('Grupp skapad!');
-  }
+const name = document.getElementById('groupName').value.trim();
+if (!name) return;
+const existing = await supabaseClient
+.from('groups')
+.select('*')
+.eq('name', name);
+if (existing.data.length > 0) {
+alert('Gruppen finns redan');
+return;
+}
+const { error } = await supabaseClient
+.from('groups')
+.insert({
+name: name
+});
+if (!error) {
+loadGroups();
+}
 }
 
 async function loadGroups() {
