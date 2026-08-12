@@ -150,13 +150,14 @@ async function loadGroups() {
 const { data, error } = await supabaseClient
 .from('groups')
 .select('*');
-const list = document.getElementById('groupList');
-list.innerHTML = '';
+console.log('DATA:', data);
+console.log('ERROR:', error);
 if (error) {
-console.log(error);
+console.error(error);
 return;
 }
- 
+const list = document.getElementById('groupList');
+list.innerHTML = '';
 data.forEach(group => {
 const li = document.createElement('li');
 li.textContent = group.name;
