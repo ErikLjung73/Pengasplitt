@@ -86,6 +86,15 @@ button:hover {
   <input id="password" type="password" placeholder="Lösenord">
   <button onclick="login()">Logga in</button>
 </div>
+
+<h2>Ny grupp</h2>
+<input id="groupName" placeholder="Gruppnamn">
+<button onclick="createGroup()">
+Skapa grupp
+</button>
+
+<h2>Grupper</h2>
+<ul id="groupList"></ul>
   
 <div class="card">
 <h3>Personer</h3>
@@ -134,6 +143,34 @@ let people = [];
 let expenses = [];
 let completed = [];
 
+async function createGroup() {
+  const name = document.getElementById('groupName').value;
+  const { data, error } = await supabaseClient
+    .from('groups')
+    .insert({
+      name: name
+    })
+    select();
+  console.log(data, error);
+  if (!error) {
+    alert('Grupp skapad!');
+  }
+}
+
+async function loadGroups() {
+  const { data, error } = await supabaseClient
+    .from('groups')
+    select('*');
+  const list = document.getElementById('groupList');
+  list.innerHTML = '';
+  data.forEach(group => {
+    const li = document.createElement('li');
+    li.textContent = group.name;
+    list.appendChild(li);
+  });
+}
+loadGroups();
+  
 function addPerson() {
   const p = document.getElementById('person').value.trim();
   if (!p) return;
