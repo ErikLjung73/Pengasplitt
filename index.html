@@ -82,6 +82,10 @@ button:hover {
 Skapa grupp
 </button>
 
+<h3 id="selectedGroup">
+Ingen grupp vald
+</h3>
+  
 <h2>Grupper</h2>
 <ul id="groupList"></ul>
   
@@ -131,6 +135,7 @@ Skapa grupp
 let people = [];
 let expenses = [];
 let completed = [];
+let currentGroupId = null;
 
 async function createGroup() {
 const name = document.getElementById('groupName').value.trim();
@@ -153,7 +158,7 @@ loadGroups();
 }
 }
 
-async function loadGroups() {
+/*async function loadGroups() {
 const { data, error } = await supabaseClient
 .from('groups')
 .select('*');
@@ -170,7 +175,32 @@ const li = document.createElement('li');
 li.textContent = group.name;
 list.appendChild(li);
 });
+}*/
+
+async function loadGroups() {
+  const { data, error } = await supabaseClient
+    .from('groups')
+    .select('*');
+  const list = document.getElementById('groupList');
+  list.innerHTML = '';
+  if (error) {
+    console.log(error);
+    return;
+  }
+  data.forEach(group => {
+    const li = document.createElement('li');
+    li.textContent = group.name;
+    li.style.cursor = 'pointer';
+    li.onclick = () => {
+      currentGroupId = group.id;
+      document.getElementById('selectedGroup').textContent =
+        `Vald grupp: ${group.name}`;
+      console.log('Vald grupp:', group.id);
+    };
+    list.appendChild(li);
+  });
 }
+
   
 function addPerson() {
   const p = document.getElementById('person').value.trim();
