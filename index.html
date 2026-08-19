@@ -196,18 +196,58 @@ async function loadGroups() {
       document.getElementById('selectedGroup').textContent =
         `Vald grupp: ${group.name}`;
       console.log('Vald grupp:', group.id);
+      loadMembers();
     };
     list.appendChild(li);
   });
 }
 
   
-function addPerson() {
+/*function addPerson() {
   const p = document.getElementById('person').value.trim();
   if (!p) return;
   people.push(p);
   document.getElementById('person').value = '';
   render();
+}*/
+
+async function addPerson() {
+  if (!currentGroupId) {
+    alert('Välj en grupp först');
+    return;
+  }
+  const name =
+    document.getElementById('person').value.trim();
+  if (!name) return;
+  const { data, error } = await supabaseClient
+    .from('group_members')
+    .insert({
+      group_id: currentGroupId,
+      member_name: name
+    });
+  console.log(data);
+  console.log(error);
+  if (!error) {
+    document.getElementById('person').value = '';
+    loadMembers();
+  }
+}
+
+async function loadMembers() {
+  if (!currentGroupId) return;
+  const { data, error } = await supabaseClient
+    .from('group_members')
+    .select('*')
+    .eq('group_id', currentGroupId);
+  console.log(data, error);
+  const div = document.getElementById('people');
+  div.innerHTML = '';
+  if (error) return;
+  data.forEach(member => {
+    const p = document.createElement('div');
+    p.textContent = member.member_name;
+    div.appendChild(p);
+  });
 }
 
 function addExpense() {
