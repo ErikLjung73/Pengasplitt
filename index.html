@@ -124,6 +124,11 @@ Ingen grupp vald
 </div>
 
 <div class="card">
+<h3>Sammanfattning</h3>
+<div id="summary"></div>
+</div>
+  
+<div class="card">
 <h3>Vem ska betala vem?</h3>
 <div id="settlements"></div>
 </div>
@@ -414,6 +419,46 @@ if (creditor.amount < 0.01) {
 j++;
 }
 }
+
+const paidTotals = {};
+people.forEach(p => {
+paidTotals[p] = 0;
+});
+expenses.forEach(e => {
+paidTotals[e.payer] += e.amount;
+});
+const totalExpenses =
+expenses.reduce(
+(sum, e) => sum + e.amount,
+0
+);
+const averagePerPerson =
+people.length
+? totalExpenses / people.length
+: 0;
+let summaryHtml = '';
+Object.entries(paidTotals).forEach(([name, amount]) => {
+summaryHtml += `
+<div>
+<strong>${name}</strong> har lagt ut
+${amount.toFixed(2)} kr
+</div>
+`;
+});
+summaryHtml += `
+<hr>
+<div>
+<strong>Totalt utlagt:</strong>
+${totalExpenses.toFixed(2)} kr
+</div>
+<div>
+<strong>Per person:</strong>
+${averagePerPerson.toFixed(2)} kr
+</div>
+`;
+document.getElementById('summary').innerHTML =
+summaryHtml;
+  
 document.getElementById('settlements').innerHTML =
 payments.length
 ? payments.join('<br>')
