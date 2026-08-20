@@ -132,7 +132,7 @@ Ingen grupp vald
 
 
 
-let people = [];
+/*let people = [];*/
 let expenses = [];
 let completed = [];
 let currentGroupId = null;
@@ -235,11 +235,11 @@ async function addPerson() {
   }
 }
 
-async function loadMembers() {
+/*async function loadMembers() {
   if (!currentGroupId) return;
   const { data, error } = await supabaseClient
     .from('members')
-    .select('*')
+    /*.select('*')
     .eq('group_id', currentGroupId);
   console.log(data, error);
   const div = document.getElementById('people');
@@ -249,6 +249,37 @@ async function loadMembers() {
     const p = document.createElement('div');
     p.textContent = member.name;
     div.appendChild(p);
+  });
+}*/
+
+async function loadMembers() {
+  if (!currentGroupId) return;
+  const { data, error } = await supabaseClient
+    .from('members')
+    .select('*')
+    .eq('group_id', currentGroupId);
+  if (error) {
+    console.log(error);
+    return;
+  }
+  const peopleDiv =
+    document.getElementById('people');
+  const payerSelect =
+    document.getElementById('payer');
+  peopleDiv.innerHTML = '';
+  payerSelect.innerHTML = '';
+  data.forEach(member => {
+    // Lista medlemmar
+    const div =
+      document.createElement('div');
+    div.textContent = member.name;
+    peopleDiv.appendChild(div);
+    // Lägg till i "Betalat av"
+    const option =
+      document.createElement('option');
+    option.value = member.name;
+    option.textContent = member.name;
+    payerSelect.appendChild(option);
   });
 }
 
