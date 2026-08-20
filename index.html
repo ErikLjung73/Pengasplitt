@@ -220,7 +220,7 @@ async function addPerson() {
     document.getElementById('person').value.trim();
   if (!name) return;
   const { data, error } = await supabaseClient
-    .from('group_members')
+    .from('members')
     .insert({
       group_id: currentGroupId,
       member_name: name
@@ -236,7 +236,7 @@ async function addPerson() {
 async function loadMembers() {
   if (!currentGroupId) return;
   const { data, error } = await supabaseClient
-    .from('group_members')
+    .from('members')
     .select('*')
     .eq('group_id', currentGroupId);
   console.log(data, error);
