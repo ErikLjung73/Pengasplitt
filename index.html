@@ -262,6 +262,9 @@ async function loadMembers() {
     console.log(error);
     return;
   }
+
+  people = data.map(member => member.name);
+  
   const peopleDiv =
     document.getElementById('people');
   const payerSelect =
@@ -284,12 +287,17 @@ async function loadMembers() {
 }
 
 function addExpense() {
-  if (!people.length) return alert('Lägg till personer först');
+  /*if (!people.length) return alert('Lägg till personer först');*/
 
   const title = document.getElementById('title').value || 'Utlägg';
   const amount = parseFloat(document.getElementById('amount').value);
   const payer = document.getElementById('payer').value;
 
+  if (!payer) {
+    alert('Lägg till minst en medlem först');
+    return;
+  }
+  
   if (!amount || amount <= 0) return;
 
   expenses.push({ title, amount, payer });
