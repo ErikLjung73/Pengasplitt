@@ -204,6 +204,7 @@ async function loadGroups() {
         `Vald grupp: ${group.name}`;
       console.log('Vald grupp:', group.id);
       loadMembers();
+      loadExpenses();
     };
     list.appendChild(li);
   });
@@ -305,7 +306,16 @@ function addExpense() {
   
   if (!amount || amount <= 0) return;
 
-  expenses.push({ title, amount, payer });
+  /*expenses.push({ title, amount, payer });*/
+
+  await supabaseClient
+.from('expenses')
+.insert({
+group_id: currentGroupId,
+description: title,
+amount: amount,
+payer: payer
+});
 
   document.getElementById('title').value = '';
   document.getElementById('amount').value = '';
@@ -351,6 +361,24 @@ function render() {
   document.getElementById('balances').innerHTML = html;
 }*/
 
+async function loadExpenses() {
+if (!currentGroupId) return;
+const { data, error } =
+await supabaseClient
+.from('expenses')
+.select('*')
+.eq('group_id', currentGroupId);
+if (error) {
+console.log(error);
+return;
+}
+expenses = data.map(e => ({
+title: e.description,
+amount: Number(e.amount),
+payer: e.payer
+}));
+render();
+}
 
 function calculate() {
 const balances = {};
