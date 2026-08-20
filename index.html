@@ -137,6 +137,8 @@ let expenses = [];
 let completed = [];
 let currentGroupId = null;
 
+loadGroups();
+  
 async function createGroup() {
 const name = document.getElementById('groupName').value.trim();
 if (!name) return;
