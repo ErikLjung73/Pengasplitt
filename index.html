@@ -137,7 +137,7 @@ Ingen grupp vald
 
 
 
-/*let people = [];*/
+let people = [];
 let expenses = [];
 let completed = [];
 let currentGroupId = null;
@@ -270,7 +270,7 @@ console.log(error);
 return;
 }
 expenses = data.map(e => ({
-title: e.description,
+title: e.title,
 amount: Number(e.amount),
 payer: e.payer
 }));
@@ -327,6 +327,7 @@ async function addExpense() {
 
   /*expenses.push({ title, amount, payer });*/
 
+  const { data, error } =
   await supabaseClient
 .from('expenses')
 .insert({
@@ -336,10 +337,13 @@ amount: amount,
 payer: payer
 });
 
+  console.log('DATA:', data);
+console.log('ERROR:', error);
+
   document.getElementById('title').value = '';
   document.getElementById('amount').value = '';
 
-  render();
+  loadExpenses();
 }
 
 function render() {
