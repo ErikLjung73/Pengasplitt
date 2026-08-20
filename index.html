@@ -223,7 +223,7 @@ async function addPerson() {
     .from('members')
     .insert({
       group_id: currentGroupId,
-      member_name: name
+      name: name
     });
   console.log(data);
   console.log(error);
@@ -245,7 +245,7 @@ async function loadMembers() {
   if (error) return;
   data.forEach(member => {
     const p = document.createElement('div');
-    p.textContent = member.member_name;
+    p.textContent = member.name;
     div.appendChild(p);
   });
 }
