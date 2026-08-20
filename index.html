@@ -331,7 +331,7 @@ async function addExpense() {
 .from('expenses')
 .insert({
 group_id: currentGroupId,
-description: title,
+title: title,
 amount: amount,
 payer: payer
 });
