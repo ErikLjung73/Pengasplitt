@@ -326,7 +326,7 @@ function render() {
   calculate();
 }
 
-function calculate() {
+/*function calculate() {
   const balances = {};
   people.forEach(p => balances[p] = 0);
 
@@ -344,6 +344,80 @@ function calculate() {
 
   html += '</table>';
   document.getElementById('balances').innerHTML = html;
+}*/
+
+
+function calculate() {
+const balances = {};
+people.forEach(p => {
+balances[p] = 0;
+});
+expenses.forEach(e => {
+const share = e.amount / people.length;
+balances[e.payer] += e.amount;
+people.forEach(p => {
+balances[p] -= share;
+});
+});
+// Visa saldon
+let html =
+'<table><tr><th>Person</th><th>Saldo</th></tr>';
+Object.entries(balances).forEach(([p, b]) => {
+html += `
+<tr>
+<td>${p}</td>
+<td>${b.toFixed(2)} kr</td>
+</tr>
+`;
+});
+html += '</table>';
+document.getElementById('balances').innerHTML = html;
+// Beräkna betalningar
+const creditors = [];
+const debtors = [];
+Object.entries(balances).forEach(([name, amount]) => {
+if (amount > 0.01) {
+creditors.push({
+name: name,
+amount: amount
+});
+}
+if (amount < -0.01) {
+debtors.push({
+name: name,
+amount: Math.abs(amount)
+});
+}
+});
+const payments = [];
+let i = 0;
+let j = 0;
+while (
+i < debtors.length &&
+j < creditors.length
+) {
+const debtor = debtors[i];
+const creditor = creditors[j];
+const payment = Math.min(
+debtor.amount,
+creditor.amount
+);
+payments.push(
+`${debtor.name} ska betala ${payment.toFixed(2)} kr till ${creditor.name}`
+);
+debtor.amount -= payment;
+creditor.amount -= payment;
+if (debtor.amount < 0.01) {
+i++;
+}
+if (creditor.amount < 0.01) {
+j++;
+}
+}
+document.getElementById('settlements').innerHTML =
+payments.length
+? payments.join('<br>')
+: 'Alla saldon är reglerade.';
 }
 </script>
 
