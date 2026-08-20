@@ -258,6 +258,25 @@ async function addPerson() {
   });
 }*/
 
+  async function loadExpenses() {
+if (!currentGroupId) return;
+const { data, error } =
+await supabaseClient
+.from('expenses')
+.select('*')
+.eq('group_id', currentGroupId);
+if (error) {
+console.log(error);
+return;
+}
+expenses = data.map(e => ({
+title: e.description,
+amount: Number(e.amount),
+payer: e.payer
+}));
+render();
+}
+
 async function loadMembers() {
   if (!currentGroupId) return;
   const { data, error } = await supabaseClient
@@ -361,24 +380,6 @@ function render() {
   document.getElementById('balances').innerHTML = html;
 }*/
 
-async function loadExpenses() {
-if (!currentGroupId) return;
-const { data, error } =
-await supabaseClient
-.from('expenses')
-.select('*')
-.eq('group_id', currentGroupId);
-if (error) {
-console.log(error);
-return;
-}
-expenses = data.map(e => ({
-title: e.description,
-amount: Number(e.amount),
-payer: e.payer
-}));
-render();
-}
 
 function calculate() {
 const balances = {};
