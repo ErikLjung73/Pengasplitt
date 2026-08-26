@@ -219,7 +219,7 @@ return;
 }
   const { data, error } = await supabaseClient
     .from('groups')
-    .select('*');
+    .select('*')
     .eq('owner_id', user.id)
   const list = document.getElementById('groupList');
   list.innerHTML = '';
