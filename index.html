@@ -173,7 +173,7 @@ async function createGroup() {
     .insert({
       name: name,
       owner_id: user.id
-  });
+  })
   .select()
   .single();
 if (error) {
