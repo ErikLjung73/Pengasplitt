@@ -14,21 +14,21 @@
   "sb_publishable_fDCqoOdCWVmsPlJJ4ztCdg_vFNBSbAv"
 );
 
-console.log("Supabase initierad", supabaseClient);
+/*console.log("Supabase initierad", supabaseClient);
 console.log("URL:", supabaseClient.supabaseURL);
 console.log(
   "Nyckellängd:",
   "sb_publishable_fDCqoOdCWVmsPlJJ4ztCdg_vFNBSbAv".length
-);
+);*/
 
-async function testConnection() {
+/*async function testConnection() {
   const result = 
     await supabaseClient
     .from('groups')
     .select('*');
   console.log('RESULT:', result);
 }
-testConnection();
+testConnection();*/
   
 </script>
   
@@ -183,6 +183,7 @@ if (error) {
 await supabaseClient
 .from('members')
 .insert({
+  owner_id: user.id,
 group_id: data.id,
 name: user.email
 });
@@ -211,7 +212,8 @@ list.appendChild(li);
 async function loadGroups() {
   const { data, error } = await supabaseClient
     .from('groups')
-    .select('*');
+    .eq('owner_id', user.id)
+    /*.select('*');*/
   const list = document.getElementById('groupList');
   list.innerHTML = '';
   if (error) {
