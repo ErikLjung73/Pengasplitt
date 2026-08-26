@@ -73,9 +73,15 @@ button:hover {
   <h3>Logga in</h3>
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Lösenord">
+  <button onclick="signUp()">Skapa konto</button>
   <button onclick="login()">Logga in</button>
+  <button onclick="logout()">Logga ut</button>
 </div>
 
+<div id="userInfo">
+Inte inloggad
+</div>
+  
 <h2>Ny grupp</h2>
 <input id="groupName" placeholder="Gruppnamn">
 <button onclick="createGroup()">
@@ -346,6 +352,67 @@ console.log('ERROR:', error);
   loadExpenses();
 }
 
+async function signUp() {
+const email =
+document.getElementById('email').value;
+const password =
+document.getElementById('password').value;
+const { data, error } =
+await supabaseClient.auth.signUp({
+email,
+password
+});
+console.log(data);
+console.log(error);
+if (error) {
+alert(error.message);
+} else {
+alert(
+'Kontot skapades. Kontrollera e-post om verifiering är aktiverad.'
+);
+}
+}
+
+async function login() {
+const email =
+document.getElementById('email').value;
+const password =
+document.getElementById('password').value;
+const { data, error } =
+await supabaseClient.auth.signInWithPassword({
+email,
+password
+});
+console.log(data);
+console.log(error);
+if (error) {
+alert(error.message);
+} else {
+alert('Inloggad!');
+checkUser();
+}
+}
+
+async function logout() {
+await supabaseClient.auth.signOut();
+document.getElementById('userInfo').textContent =
+'Inte inloggad';
+}
+
+async function checkUser() {
+const {
+data: { user }
+} = await supabaseClient.auth.getUser();
+if (user) {
+document.getElementById('userInfo').textContent =
+'Inloggad som: ' + user.email;
+console.log(user);
+} else {
+document.getElementById('userInfo').textContent =
+'Inte inloggad';
+}
+}
+  
 function render() {
   document.getElementById('people').textContent = people.join(', ');
 
@@ -497,6 +564,9 @@ payments.length
 ? payments.join('<br>')
 : 'Alla saldon är reglerade.';
 }
+
+checkUser();
+  
 </script>
 
 </body>
