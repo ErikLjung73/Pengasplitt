@@ -183,7 +183,7 @@ if (error) {
 await supabaseClient
 .from('members')
 .insert({
-  owner_id: user.id,
+  /*owner_id: user.id,*/
 group_id: data.id,
 name: user.email
 });
@@ -210,10 +210,17 @@ list.appendChild(li);
 }*/
 
 async function loadGroups() {
+  const {
+data: { user }
+} = await supabaseClient.auth.getUser();
+if (!user) {
+document.getElementById('groupList').innerHTML = '';
+return;
+}
   const { data, error } = await supabaseClient
     .from('groups')
+    .select('*');
     .eq('owner_id', user.id)
-    /*.select('*');*/
   const list = document.getElementById('groupList');
   list.innerHTML = '';
   if (error) {
