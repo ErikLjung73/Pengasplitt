@@ -423,6 +423,7 @@ checkUser();
 
 async function logout() {
 await supabaseClient.auth.signOut();
+  document.getElementById('groupList').innerHTML = '';
 document.getElementById('userInfo').textContent =
 'Inte inloggad';
 }
