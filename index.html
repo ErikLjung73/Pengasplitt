@@ -151,31 +151,29 @@ let currentGroupId = null;
 loadGroups();
   
 async function createGroup() {
-const name = document.getElementById('groupName').value.trim();
-if (!name) return;
-
-const {
-data: { user }
-} = await supabaseClient.auth.getUser();
-if (!user) {
-alert('Du måste vara inloggad för att skapa en grupp');
-return;
-}
-  
-const existing = await supabaseClient
-.from('groups')
-.select('*')
-.eq('name', name);
-if (existing.data.length > 0) {
-alert('Gruppen finns redan');
-return;
-}
-const { data, error } = await supabaseClient
-.from('groups')
-.insert({
-name: name
-owner_id: user.id
-});
+  const name = document.getElementById('groupName').value.trim();
+  if (!name) return;
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
+  if (!user) {
+    alert('Du måste vara inloggad för att skapa en grupp');
+    return;
+  }
+  const existing = await supabaseClient
+    .from('groups')
+    .select('*')
+    .eq('name', name);
+  if (existing.data.length > 0) {
+    alert('Gruppen finns redan');
+    return;
+  }
+  const { data, error } = await supabaseClient
+    .from('groups')
+    .insert({
+      name: name,
+      owner_id: user.id
+  });
   .select()
   .single();
 if (error) {
