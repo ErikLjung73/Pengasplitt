@@ -170,11 +170,14 @@ if (existing.data.length > 0) {
 alert('Gruppen finns redan');
 return;
 }
-const { error } = await supabaseClient
+const { data, error } = await supabaseClient
 .from('groups')
 .insert({
 name: name
+owner_id: user.id
 });
+  .select()
+  .single();
 if (error) {
   console.log(error);
   return
