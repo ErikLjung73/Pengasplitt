@@ -450,6 +450,24 @@ await supabaseClient.auth.signOut();
   document.getElementById('groupList').innerHTML = '';
 document.getElementById('userInfo').textContent =
 'Inte inloggad';
+      document.getElementById('selectedGroup').textContent = '';
+
+  await supabaseClient.auth.signOut();
+// Rensa val
+currentGroupId = null;
+// Rensa lokala arrayer
+people = [];
+expenses = [];
+// Rensa UI
+document.getElementById('groupList').innerHTML = '';
+document.getElementById('people').innerHTML = '';
+document.getElementById('payer').innerHTML = '';
+document.getElementById('expensesBody').innerHTML = '';
+document.getElementById('balances').innerHTML = '';
+document.getElementById('summary').innerHTML = '';
+document.getElementById('settlements').innerHTML = '';
+document.getElementById('selectedGroup').textContent = '';
+checkUser();
 }
 
 async function checkUser() {
