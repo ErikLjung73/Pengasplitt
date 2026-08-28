@@ -109,6 +109,13 @@ border-color: #0070f3;
 list-style: none;
 padding-left: 0;
 }
+  #selectedGroup {
+padding: 10px;
+background: #eef5ff;
+border-radius: 8px;
+color: #0070f3;
+font-weight: 600;
+}
 </style>
 </head>
 
@@ -556,6 +563,21 @@ console.log(error);
 return;
 }
 loadExpenses();
+}
+
+async function deleteMember(id) {
+if (!confirm('Vill du radera medlemmen?')) {
+return;
+}
+const { error } = await supabaseClient
+.from('members')
+.delete()
+.eq('id', id);
+if (error) {
+console.log(error);
+return;
+}
+loadMembers();
 }
   
 function render() {
