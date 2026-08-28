@@ -87,6 +87,26 @@ button:hover {
   text-decoration: line-through;
   color: gray;
 }
+.group-item {
+padding: 10px 12px;
+margin-bottom: 6px;
+border: 1px solid #ddd;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.group-item:hover {
+background: #f5f5f5;
+}
+.group-item.selected {
+background: #0070f3;
+color: white;
+border-color: #0070f3;
+}
+#groupList {
+list-style: none;
+padding-left: 0;
+}
 </style>
 </head>
 
@@ -170,6 +190,7 @@ let people = [];
 let expenses = [];
 let completed = [];
 let currentGroupId = null;
+let selectedGroupElement = null;
 
 loadGroups();
   
@@ -252,13 +273,18 @@ return;
   }
   data.forEach(group => {
     const li = document.createElement('li');
+    li.className = 'group-item';
     li.textContent = group.name;
     li.style.cursor = 'pointer';
     li.onclick = () => {
+      if (selectedGroupElement) {
+        selectedGroupElement.classList.remove('selected');
+      } 
+      li.classList.add('selected');
+      selectedGroupElement = li;
       currentGroupId = group.id;
       document.getElementById('selectedGroup').textContent =
         `Vald grupp: ${group.name}`;
-      console.log('Vald grupp:', group.id);
       loadMembers();
       loadExpenses();
     };
@@ -525,7 +551,7 @@ loadExpenses();
 }
   
 function render() {
-  document.getElementById('people').textContent = people.join(', ');
+  /*document.getElementById('people').textContent = people.join(', ');*/
 
   const payer = document.getElementById('payer');
   payer.innerHTML = people.map(p => `<option>${p}</option>`).join('');
