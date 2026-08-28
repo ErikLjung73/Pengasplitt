@@ -88,8 +88,8 @@ button:hover {
   color: gray;
 }
 .group-item {
-padding: 10px 12px;
-margin-bottom: 6px;
+padding: 12px;
+margin-bottom: 10px;
 border: 1px solid #ddd;
 border-radius: 8px;
 cursor: pointer;
@@ -125,21 +125,26 @@ padding-left: 0;
 
 <div id="userInfo"></div>
   
-<h2>Ny grupp</h2>
-<input id="groupName" placeholder="Gruppnamn">
+
+<div class="card">
+<h3>➕ Ny grupp</h3>
+<input
+id="groupName"
+placeholder="Gruppnamn">
 <button onclick="createGroup()">
 Skapa grupp
 </button>
-
+</div>
+  
 <h3 id="selectedGroup">
 Ingen grupp vald
 </h3>
   
-<h2>Grupper</h2>
+<h2>👥 Mina grupper</h2>
 <ul id="groupList"></ul>
   
 <div class="card">
-<h3>👥 Personer</h3>
+<h3>👥 Medlemmar</h3>
 <input id="person" placeholder="Namn">
 <button onclick="addPerson()">Lägg till</button>
 <div id="people"></div>
@@ -168,17 +173,17 @@ Ingen grupp vald
 </div>
 
 <div class="card">
-<h3>Saldon</h3>
+<h3>📊 Saldon</h3>
 <div id="balances"></div>
 </div>
 
 <div class="card">
-<h3>Sammanfattning</h3>
+<h3>📈 Sammanfattning</h3>
 <div id="summary"></div>
 </div>
   
 <div class="card">
-<h3>Vem ska betala vem?</h3>
+<h3>✅ Vem ska betala vem?</h3>
 <div id="settlements"></div>
 </div>
 
