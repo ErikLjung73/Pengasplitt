@@ -326,7 +326,7 @@ console.log(error);
 return;
 }
 expenses = data.map(e => ({
-  id: e.id
+  id: e.id,
 title: e.title,
 amount: Number(e.amount),
 payer: e.payer
