@@ -100,7 +100,7 @@ button:hover {
   <input id="password" type="password" placeholder="Lösenord">
   <button onclick="signUp()">Skapa konto</button>
   <button onclick="login()">Logga in</button>
-  <button onclick="logout()">Logga ut</button>
+  <button onclick="logout()">🚪 Logga ut</button>
 </div>
 
 <div id="userInfo"></div>
@@ -119,7 +119,7 @@ Ingen grupp vald
 <ul id="groupList"></ul>
   
 <div class="card">
-<h3>Personer</h3>
+<h3>👥 Personer</h3>
 <input id="person" placeholder="Namn">
 <button onclick="addPerson()">Lägg till</button>
 <div id="people"></div>
@@ -134,7 +134,7 @@ Ingen grupp vald
 </div>
 
 <div class="card">
-<h3>Utlägg</h3>
+<h3>💸 Utlägg</h3>
 <table>
 <thead>
 <tr>
@@ -438,7 +438,7 @@ console.log(error);
 if (error) {
 alert(error.message);
 } else {
-alert('Inloggad!');
+/*alert('Inloggad!');*/
 checkUser();
   loadGroups();
 }
