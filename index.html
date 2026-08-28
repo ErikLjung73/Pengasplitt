@@ -326,6 +326,7 @@ console.log(error);
 return;
 }
 expenses = data.map(e => ({
+  id: e.id
 title: e.title,
 amount: Number(e.amount),
 payer: e.payer
@@ -489,6 +490,21 @@ document.getElementById('userInfo').textContent =
 'Inte inloggad';
 }
 }*/
+
+async function deleteExpense(id) {
+const confirmed =
+confirm('Vill du radera detta utlägg?');
+if (!confirmed) return;
+const { error } = await supabaseClient
+.from('expenses')
+.delete()
+.eq('id', id);
+if (error) {
+console.log(error);
+return;
+}
+loadExpenses();
+}
   
 function render() {
   document.getElementById('people').textContent = people.join(', ');
@@ -502,6 +518,11 @@ function render() {
         <td>${e.title}</td>
         <td>${e.amount}</td>
         <td>${e.payer}</td>
+        <td>
+          <button onclick="deleteExpense('${e.id}')">
+              🗑️
+          </button>
+          </td>
       </tr>`
     ).join('');
 
