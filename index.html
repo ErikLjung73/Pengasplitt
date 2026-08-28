@@ -395,12 +395,21 @@ async function loadMembers() {
   peopleDiv.innerHTML = '';
   payerSelect.innerHTML = '';
   data.forEach(member => {
-    // Lista medlemmar
     const div =
       document.createElement('div');
-    div.textContent = member.name;
+    div.className = 'member-row';
+    div.innerHTML = `
+    <span>👤 ${member.name}</span>
+    <button
+    class="delete-btn"
+    onclick="deleteMember('${member.id}')"
+    title="Radera medlem">
+    
+    🗑️
+    
+    </button>
+    `;
     peopleDiv.appendChild(div);
-    // Lägg till i "Betalat av"
     const option =
       document.createElement('option');
     option.value = member.name;
