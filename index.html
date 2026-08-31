@@ -240,12 +240,15 @@ if (error) {
   console.log(error);
   return
 }
+  const fullName =
+`${user.user_metadata?.first_name || ''} ${user.user_metadata?.last_name || ''}`
+.trim();
 await supabaseClient
 .from('members')
 .insert({
   /*owner_id: user.id,*/
 group_id: data.id,
-name: user.email
+name: fullName
 });
 loadGroups();
 }
