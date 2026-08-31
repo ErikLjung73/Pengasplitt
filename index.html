@@ -117,6 +117,16 @@ background: #EF4444;
 .logout-btn:hover {
 background: #DC2626;
 }
+.invite-card {
+padding: 12px;
+margin-bottom: 15px;
+border: 1px solid #ddd;
+border-radius: 8px;
+background: #fff8e6;
+}
+.invite-card button {
+margin-top: 8px;
+}
 #groupList {
 list-style: none;
 padding-left: 0;
@@ -147,7 +157,7 @@ font-weight: 600;
 </div>
 
 <div id="userInfo"></div>
-  
+<div id="invites"></div>
 
 <div class="card">
 <h3>➕ Ny grupp</h3>
@@ -171,6 +181,15 @@ Ingen grupp vald
 <input id="person" placeholder="Namn">
 <button onclick="addPerson()">Lägg till</button>
 <div id="people"></div>
+</div>
+
+<div style="margin-top:10px;">
+<input
+id="inviteEmail"
+placeholder="E-postadress">
+<button onclick="inviteUser()">
+📧 Bjud in
+</button>
 </div>
 
 <div class="card">
@@ -568,6 +587,7 @@ return;
 document.getElementById('logoutButton').style.display =
 'inline-block';
   }
+  loadInvites();
 const firstName =
 user.user_metadata?.first_name || '';
 const lastName =
@@ -636,6 +656,71 @@ console.log(error);
 return;
 }
 loadMembers();
+}
+
+async function inviteUser() {
+if (!currentGroupId) {
+alert('Välj en grupp först');
+return;
+}
+const email =
+document.getElementById('inviteEmail')
+.value
+.trim()
+.toLowerCase();
+if (!email) {
+return;
+}
+const {
+data: { user }
+} = await supabaseClient.auth.getUser();
+const { error } =
+await supabaseClient
+.from('group_invites')
+.insert({
+group_id: currentGroupId,
+email: email,
+invited_by: user.id
+});
+if (error) {
+console.log(error);
+alert('Kunde inte skapa inbjudan');
+return;
+}
+alert('Inbjudan skapad ✅');
+document.getElementById('inviteEmail').value = '';
+}
+
+async function loadInvites() {
+const {
+data: { user }
+} = await supabaseClient.auth.getUser();
+if (!user) return;
+const { data, error } =
+await supabaseClient
+.from('group_invites')
+.select('*')
+.eq('email', user.email)
+.eq('accepted', false);
+if (error) {
+console.log(error);
+return;
+}
+const invitesDiv =
+document.getElementById('invites');
+invitesDiv.innerHTML = '';
+data.forEach(invite => {
+invitesDiv.innerHTML += `
+<div class="invite-card">
+📨 Du har blivit inbjuden till en grupp
+<br>
+<button
+onclick="acceptInvite('${invite.id}')">
+Acceptera
+</button>
+</div>
+`;
+});
 }
   
 function render() {
