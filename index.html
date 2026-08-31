@@ -722,6 +722,77 @@ Acceptera
 `;
 });
 }
+
+async function acceptInvite(inviteId) {
+  try {
+
+    const {
+      data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+      alert('Du måste vara inloggad.');
+      return;
+    }
+
+    const { data: invite, error: inviteError } =
+      await supabaseClient
+        .from('group_invites')
+        .select('*')
+        .eq('id', inviteId)
+        .single();
+
+    if (inviteError || !invite) {
+      console.log(inviteError);
+      alert('Kunde inte hitta inbjudan.');
+      return;
+    }
+
+    const firstName =
+      user.user_metadata?.first_name ||
+      user.email;
+
+    const { error: memberError } =
+      await supabaseClient
+        .from('members')
+        .insert({
+          group_id: invite.group_id,
+          name: firstName
+        });
+
+    if (memberError) {
+      console.log(memberError);
+      alert('Kunde inte lägga till medlem.');
+      return;
+    }
+
+    const { error: updateError } =
+      await supabaseClient
+        .from('group_invites')
+        .update({
+          accepted: true
+        })
+        .eq('id', inviteId);
+
+    if (updateError) {
+      console.log(updateError);
+      alert('Kunde inte uppdatera inbjudan.');
+      return;
+    }
+
+    alert('✅ Inbjudan accepterad!');
+
+    loadInvites();
+    loadGroups();
+
+  } catch (err) {
+
+    console.log(err);
+
+    alert('Något gick fel.');
+
+  }
+}
   
 function render() {
   /*document.getElementById('people').textContent = people.join(', ');*/
