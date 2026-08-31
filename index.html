@@ -75,13 +75,13 @@ input, select, button {
   margin: 5px;
 }
 button {
-  background: #0070f3;
+  background: #5B6EE1;
   color: white;
   border: none;
   border-radius: 6px;
 }
 button:hover {
-  background: #0051a3;
+  background: #4F46E5;
 }
 .done {
   text-decoration: line-through;
@@ -104,6 +104,18 @@ color: white;
 border-color: #0070f3;
   font-weight: 600;
   box-shadow: 0 3px 10px rgba(0,112,243,0.3);
+}
+.login-btn {
+background: #10B981;
+}
+.login-btn:hover {
+background: #059669;
+}
+.logout-btn {
+background: #EF4444;
+}
+.logout-btn:hover {
+background: #DC2626;
 }
 #groupList {
 list-style: none;
@@ -130,8 +142,8 @@ font-weight: 600;
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Lösenord">
   <button onclick="signUp()">Skapa konto</button>
-  <button onclick="login()">Logga in</button>
-  <button onclick="logout()">🚪 Logga ut</button>
+  <button class="login-btn" onclick="login()">🔓 Logga in</button>
+  <button class="logout-btn" onclick="logout()">🚪 Logga ut</button>
 </div>
 
 <div id="userInfo"></div>
@@ -544,8 +556,18 @@ document.getElementById('userInfo');
 if (!user) {
 userInfo.innerHTML =
 'Inte inloggad';
+  document.getElementById('loginButton').style.display =
+'inline-block';
+document.getElementById('logoutButton').style.display =
+'none';
 return;
 }
+  else {
+    document.getElementById('loginButton').style.display =
+'none';
+document.getElementById('logoutButton').style.display =
+'inline-block';
+  }
 const firstName =
 user.user_metadata?.first_name || '';
 const lastName =
