@@ -446,7 +446,6 @@ async function addPerson() {
   const name =
     document.getElementById('person').value.trim();
   if (!name) return;
-  const fullName =
 
   const { data, error } = await supabaseClient
     .from('members')
