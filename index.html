@@ -783,7 +783,7 @@ console.log(error);
 alert('Kunde inte skapa inbjudan');
 return;
 }
-  await fetch('/api/send-invite', {
+  const response = await fetch('/api/send-invite', {
 
   method: 'POST',
 
@@ -792,14 +792,16 @@ return;
   },
 
   body: JSON.stringify({
-
     email: email,
-
     groupName: group.name
-
   })
 
 });
+
+const result = await response.json();
+
+console.log('Mail response:', result);
+  
 alert('Inbjudan skapad ✅');
 document.getElementById('inviteEmail').value = '';
 }
