@@ -149,7 +149,7 @@ font-weight: 600;
   <h3>Logga in</h3>
   <input id="firstName" placeholder="Förnamn">
   <input id="lastName" placeholder="Efternamn">
-  <input id="email" placeholder="Email">
+  <input id="username" placeholder="Användarnamn">
   <input id="password" type="password" placeholder="Lösenord">
   <button onclick="signUp()">Skapa konto</button>
   <button id="loginButton" class="login-btn" onclick="login()">Logga in</button>
@@ -578,14 +578,18 @@ console.log('ERROR:', error);
 }
 
 async function signUp() {
-const email =
-document.getElementById('email').value;
+const username =
+document.getElementById('username').value
+  .trim()
+  .toLowerCase();
 const password =
 document.getElementById('password').value;
   const firstName =
 document.getElementById('firstName').value;
 const lastName =
 document.getElementById('lastName').value;
+const email =
+  `${username}@splittapp.local`;
   const { data, error } =
 await supabaseClient.auth.signUp({
 email,
@@ -609,8 +613,12 @@ alert(
 }
 
 async function login() {
-const email =
-document.getElementById('email').value;
+const username =
+document.getElementById('username').value
+  .trim()
+  .toLowerCase();
+  const email = 
+    `${username}@splittapp.local`;
 const password =
 document.getElementById('password').value;
 const { data, error } =
@@ -682,8 +690,7 @@ const lastName =
 user.user_metadata?.last_name || '';
   const displayName =
 firstName
-? `${firstName} ${lastName}`
-: user.email;
+? `${firstName} ${lastName}`;
 userInfo.innerHTML = `
 <div class="user-card">
 <div class="card">
