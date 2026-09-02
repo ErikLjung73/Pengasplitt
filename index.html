@@ -185,8 +185,14 @@ Ingen grupp vald
 
 <div style="margin-top:10px;">
 <input
-id="inviteEmail"
-placeholder="E-postadress">
+id="inviteFirstName"
+placeholder="Förnamn">
+  <input
+id="inviteLastName"
+placeholder="Efternamn">
+<input
+id="inviteUsername"
+placeholder="Användarnamn">
 <button onclick="inviteUser()">
 📧 Bjud in
 </button>
@@ -755,13 +761,24 @@ if (!currentGroupId) {
 alert('Välj en grupp först');
 return;
 }
-const email =
-document.getElementById('inviteEmail')
-.value
-.trim()
-.toLowerCase();
-if (!email) {
-return;
+const firstName =
+  document.getElementById('inviteFirstName')
+    .value
+    .trim();
+
+const lastName =
+  document.getElementById('inviteLastName')
+    .value
+    .trim();
+
+const username =
+  document.getElementById('inviteUsername')
+    .value
+    .trim()
+    .toLowerCase();
+
+if (!username) {
+  return;
 }
 const {
 data: { user }
@@ -777,37 +794,18 @@ const { error } =
 await supabaseClient
 .from('group_invites')
 .insert({
-group_id: currentGroupId,
+  group_id: currentGroupId,
   group_name: group.name,
-username: username,
-invited_by: user.id
+  username: username,
+  first_name: firstName,
+  last_name: lastName,
+  invited_by: user.id,
+  accepted: false
 });
 if (error) {
 console.log(error);
 alert('Kunde inte skapa inbjudan');
 return;
-}
-  const response = await fetch('/api/send-invite', {
-
-  method: 'POST',
-
-  headers: {
-    'Content-Type': 'application/json'
-  },
-
-  body: JSON.stringify({
-    email: email,
-    groupName: group.name
-  })
-
-});
-
-const result = await response.json();
-
-console.log('Mail response:', result);
-  
-alert('Inbjudan skapad ✅');
-document.getElementById('inviteEmail').value = '';
 }
 
 async function loadInvites() {
