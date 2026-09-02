@@ -447,13 +447,12 @@ async function addPerson() {
     document.getElementById('person').value.trim();
   if (!name) return;
   const fullName =
-`${user.user_metadata?.first_name || ''} ${user.user_metadata?.last_name || ''}`
-.trim();
+
   const { data, error } = await supabaseClient
     .from('members')
     .insert({
       group_id: currentGroupId,
-      name: fullName
+      name: name
     });
   console.log(data);
   console.log(error);
