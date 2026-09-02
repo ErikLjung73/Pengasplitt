@@ -682,6 +682,7 @@ userInfo.innerHTML =
 'inline-block';
 document.getElementById('logoutButton').style.display =
 'none';
+  document.getElementById('invites').innerHTML = '';
 return;
 }
   else {
@@ -865,6 +866,9 @@ async function acceptInvite(inviteId) {
         .eq('id', inviteId)
         .single();
 
+    loadInvites();
+    loadGroups();
+    
     if (inviteError || !invite) {
       console.log(inviteError);
       alert('Kunde inte hitta inbjudan.');
