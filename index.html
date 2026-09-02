@@ -690,7 +690,7 @@ const lastName =
 user.user_metadata?.last_name || '';
   const displayName =
 firstName
-? `${firstName} ${lastName}`;
+? `${firstName} ${lastName}`.trim();
 userInfo.innerHTML = `
 <div class="user-card">
 <div class="card">
@@ -701,9 +701,6 @@ userInfo.innerHTML = `
 ${displayName}
 </strong>
 <br>
-<small>
-${user.email}
-</small>
 </div>
 </div>
 `;
