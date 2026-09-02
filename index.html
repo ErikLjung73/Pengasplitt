@@ -280,6 +280,7 @@ await supabaseClient
   /*owner_id: user.id,*/
 group_id: data.id,
 name: fullName
+  email: user.email
 });
 loadGroups();
 }
@@ -359,11 +360,14 @@ async function addPerson() {
   const name =
     document.getElementById('person').value.trim();
   if (!name) return;
+  const fullName =
+`${user.user_metadata?.first_name || ''} ${user.user_metadata?.last_name || ''}`
+.trim();
   const { data, error } = await supabaseClient
     .from('members')
     .insert({
       group_id: currentGroupId,
-      name: name
+      name: fullName
     });
   console.log(data);
   console.log(error);
@@ -751,13 +755,17 @@ async function acceptInvite(inviteId) {
     const firstName =
       user.user_metadata?.first_name ||
       user.email;
-
+const fullName =
+`${user.user_metadata?.first_name || ''} ${user.user_metadata?.last_name || ''}`
+.trim();
+    
     const { error: memberError } =
       await supabaseClient
         .from('members')
         .insert({
           group_id: invite.group_id,
-          name: firstName
+          name: fullName,
+          email: user.email
         });
 
     if (memberError) {
