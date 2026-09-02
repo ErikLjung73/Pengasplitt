@@ -279,7 +279,7 @@ await supabaseClient
 .insert({
   /*owner_id: user.id,*/
 group_id: data.id,
-name: fullName
+name: fullName,
   email: user.email
 });
 loadGroups();
