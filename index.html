@@ -596,6 +596,7 @@ email,
 password,
   options: {
 data: {
+  username: username,
 first_name: firstName,
 last_name: lastName
 }
@@ -778,7 +779,7 @@ await supabaseClient
 .insert({
 group_id: currentGroupId,
   group_name: group.name,
-email: email,
+username: username,
 invited_by: user.id
 });
 if (error) {
@@ -818,7 +819,7 @@ const { data, error } =
 await supabaseClient
 .from('group_invites')
 .select('*')
-.eq('email', user.email)
+.eq('username', user.user_metadata.username)
 .eq('accepted', false);
 if (error) {
 console.log(error);
