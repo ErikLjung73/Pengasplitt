@@ -11,49 +11,48 @@ export default async function handler(req, res) {
     groupName
   } = req.body;
 
-  const response = await fetch(
-    'https://api.resend.com/emails',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          `Bearer ${process.env.RESEND_API_KEY}`
-      },
-      body: JSON.stringify({
-        from:
-          'SplitApp <onboarding@resend.dev>',
+  try {
 
-        to: [email],
+    const response = await fetch(
+      'https://api.resend.com/emails',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`
+        },
+        body: JSON.stringify({
+          from: 'SplitApp <onboarding@resend.dev>',
+          to: [email],
+          subject: `Inbjudan till ${groupName}`,
+          html: `
+            <h2>Du har blivit inbjuden till SplitApp</h2>
 
-        subject:
-          `Inbjudan till ${groupName}`,
+            <p>
+              Du har blivit inbjuden till gruppen
+              <strong>${groupName}</strong>.
+            </p>
 
-        html: `
-          <h2>Du har blivit inbjuden till SplitApp</h2>
+            <p>
+              Logga in eller skapa ett konto för att acceptera inbjudan.
+            </p>
+          `
+        })
+      }
+    );
 
-          <p>
-            Du har blivit inbjuden till gruppen
-            <strong>${groupName}</strong>.
-          </p>
+    const data = await response.json();
 
-          <p>
-            Logga in eller skapa konto
-            för att acceptera inbjudan.
-          </p>
+    return res.status(200).json(data);
 
-          <p>
-            <a href="https://pengasplitt-jl.app
-              Öppna SplitApp
-            </a>
-          </p>
-        `
-      })
-    }
-  );
+  } catch (error) {
 
-  const data = await response.json();
+    console.error(error);
 
-  return res.status(200).json(data);
+    return res.status(500).json({
+      error: 'Kunde inte skicka e-post'
+    });
+
+  }
 
 }
