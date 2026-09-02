@@ -807,6 +807,10 @@ console.log(error);
 alert('Kunde inte skapa inbjudan');
 return;
 }
+  alert('Inbjudan skapad ✅');
+document.getElementById('inviteFirstName').value = '';
+document.getElementById('inviteLastName').value = '';
+document.getElementById('inviteUsername').value = '';
 }
 
 async function loadInvites() {
