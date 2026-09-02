@@ -783,6 +783,23 @@ console.log(error);
 alert('Kunde inte skapa inbjudan');
 return;
 }
+  await fetch('/api/send-invite', {
+
+  method: 'POST',
+
+  headers: {
+    'Content-Type': 'application/json'
+  },
+
+  body: JSON.stringify({
+
+    email: email,
+
+    groupName: group.name
+
+  })
+
+});
 alert('Inbjudan skapad ✅');
 document.getElementById('inviteEmail').value = '';
 }
