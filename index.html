@@ -152,8 +152,8 @@ font-weight: 600;
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Lösenord">
   <button onclick="signUp()">Skapa konto</button>
-  <button id="loginButton" class="login-btn" onclick="login()">🔓 Logga in</button>
-  <button id="logoutButton" class="logout-btn" onclick="logout()">🚪 Logga ut</button>
+  <button id="loginButton" class="login-btn" onclick="login()">Logga in</button>
+  <button id="logoutButton" class="logout-btn" onclick="logout()">Logga ut</button>
 </div>
 
 <div id="userInfo"></div>
@@ -304,7 +304,7 @@ list.appendChild(li);
 });
 }*/
 
-async function loadGroups() {
+/*async function loadGroups() {
   const {
 data: { user }
 } = await supabaseClient.auth.getUser();
@@ -341,6 +341,92 @@ return;
     };
     list.appendChild(li);
   });
+}
+*/
+
+  async function loadGroups() {
+
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
+
+  const list =
+    document.getElementById('groupList');
+
+  list.innerHTML = '';
+
+  if (!user) {
+    return;
+  }
+
+  // Hämta grupper där användaren är medlem
+
+  const { data: memberships, error: membershipError } =
+    await supabaseClient
+      .from('members')
+      .select('group_id')
+      .eq('email', user.email);
+
+  if (membershipError) {
+    console.log(membershipError);
+    return;
+  }
+
+  const memberGroupIds =
+    memberships.map(m => m.group_id);
+
+  // Hämta alla grupper
+
+  const { data: groups, error: groupsError } =
+    await supabaseClient
+      .from('groups')
+      .select('*');
+
+  if (groupsError) {
+    console.log(groupsError);
+    return;
+  }
+
+  // Filtrera fram grupper användaren får se
+
+  const visibleGroups =
+    groups.filter(group =>
+      group.owner_id === user.id ||
+      memberGroupIds.includes(group.id)
+    );
+
+  visibleGroups.forEach(group => {
+
+    const li =
+      document.createElement('li');
+
+    li.className = 'group-item';
+
+    li.textContent = group.name;
+
+    li.onclick = () => {
+
+      if (selectedGroupElement) {
+        selectedGroupElement.classList.remove('selected');
+      }
+
+      li.classList.add('selected');
+      selectedGroupElement = li;
+
+      currentGroupId = group.id;
+
+      document.getElementById('selectedGroup').textContent =
+        `📂 ${group.name}`;
+
+      loadMembers();
+      loadExpenses();
+
+    };
+
+    list.appendChild(li);
+
+  });
+
 }
 
   
