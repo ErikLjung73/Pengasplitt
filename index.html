@@ -764,11 +764,19 @@ return;
 const {
 data: { user }
 } = await supabaseClient.auth.getUser();
+  const { data: group } =
+  await supabaseClient
+    .from('groups')
+    .select('name')
+    .eq('id', currentGroupId)
+    .single();
+  
 const { error } =
 await supabaseClient
 .from('group_invites')
 .insert({
 group_id: currentGroupId,
+  group_name: group.name,
 email: email,
 invited_by: user.id
 });
@@ -802,7 +810,8 @@ invitesDiv.innerHTML = '';
 data.forEach(invite => {
 invitesDiv.innerHTML += `
 <div class="invite-card">
-📨 Du har blivit inbjuden till en grupp
+📨 Du har blivit inbjuden till gruppen 
+  <strong>${invite.group_name}</strong>
 <br>
 <button
 onclick="acceptInvite('${invite.id}')">
