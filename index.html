@@ -37,7 +37,7 @@ body {
   font-family: Arial, sans-serif;
   max-width: 900px;
   margin: auto;
-  padding: 20px;
+  padding: 16px;
 }
 .card {
   border: 1px solid #ddd;
@@ -60,7 +60,7 @@ background: #fafafa;
 width: 42px;
 height: 42px;
 border-radius: 50%;
-background: #0070f3;
+background: #7289C8;
 color: white;
 display: flex;
 align-items: center;
@@ -135,6 +135,14 @@ margin-top: 8px;
   background: #f8f4e8;
   border: 1px solid #ddd6b8;
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+}
 #groupList {
 list-style: none;
 padding-left: 0;
@@ -147,8 +155,19 @@ border-radius: 8px;
 color: #556b94;
 font-weight: 600;
 }
+  #inviteSection {
+  margin-top: 10px;
+  }
   @media (max-width: 768px) {
 
+    table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  }
+    body {
+     padding: 10px;
+  }
   .container {
     padding: 12px;
   }
@@ -163,6 +182,22 @@ font-weight: 600;
   .row {
     flex-direction: column;
   }
+
+    .user-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+    .member-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    }
+    
+    #inviteSection input,
+    #inviteSection button {
+    width: 100%;
+    }
 
 }
 </style>
@@ -214,7 +249,7 @@ Ingen grupp vald
   <div id="pendingInvites"></div>
 </div>
 
-<div style="margin-top:10px;">
+  <div id="inviteSection">
 <input
 id="inviteFirstName"
 placeholder="Förnamn">
