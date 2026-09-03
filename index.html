@@ -147,6 +147,24 @@ border-radius: 8px;
 color: #556b94;
 font-weight: 600;
 }
+  @media (max-width: 768px) {
+
+  .container {
+    padding: 12px;
+  }
+
+  input,
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+}
 </style>
 </head>
 <meta name="viewport"
@@ -247,26 +265,6 @@ placeholder="Användarnamn">
 <h3>✅ Vem ska betala vem?</h3>
 <div id="settlements"></div>
 </div>
-
-  @media (max-width: 768px) {
-
-  .container {
-    padding: 12px;
-  }
-
-  input,
-  button {
-    width: 100%;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-  }
-
-  .row {
-    flex-direction: column;
-  }
-
-}
-
 <script>
 
 
