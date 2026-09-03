@@ -75,13 +75,13 @@ input, select, button {
   margin: 5px;
 }
 button {
-  background: #5B6EE1;
+  background: #7289C8;
   color: white;
   border: none;
   border-radius: 6px;
 }
 button:hover {
-  background: #4F46E5;
+  background: #6178B8;
 }
 .done {
   text-decoration: line-through;
@@ -99,43 +99,50 @@ transition: all 0.2s ease;
 background: #f5f5f5;
 }
 .group-item.selected {
-background: #0070f3;
-color: white;
+background: #DCE5F5;
+color: #31508A;
 border-color: #0070f3;
   font-weight: 600;
   box-shadow: 0 3px 10px rgba(0,112,243,0.3);
 }
 .login-btn {
-background: #10B981;
+background: #7CBF9E;
 }
 .login-btn:hover {
-background: #059669;
+background: #69AE8B;
 }
 .logout-btn {
-background: #EF4444;
+background: #D98989;
 }
 .logout-btn:hover {
-background: #DC2626;
+background: #C67474;
 }
 .invite-card {
 padding: 12px;
 margin-bottom: 15px;
-border: 1px solid #ddd;
+border: 1px solid #E6DDBF;
 border-radius: 8px;
-background: #fff8e6;
+background: #F8F4E8;
 }
 .invite-card button {
 margin-top: 8px;
+}
+.invite-row {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  background: #f8f4e8;
+  border: 1px solid #ddd6b8;
 }
 #groupList {
 list-style: none;
 padding-left: 0;
 }
-  #selectedGroup {
+#selectedGroup {
 padding: 10px;
-background: #eef5ff;
+background: #e9eff8;
 border-radius: 8px;
-color: #0070f3;
+color: #556b94;
 font-weight: 600;
 }
 </style>
@@ -178,9 +185,11 @@ Ingen grupp vald
   
 <div class="card">
 <h3>👥 Medlemmar</h3>
-<input id="person" placeholder="Namn">
-<button onclick="addPerson()">Lägg till</button>
 <div id="people"></div>
+</div>
+<div class="card">
+  <h3>📨 Väntande inbjudningar</h3>
+  <div id="pendingInvites"></div>
 </div>
 
 <div style="margin-top:10px;">
@@ -426,6 +435,7 @@ return;
 
       loadMembers();
       loadExpenses();
+      loadPendingInvites();
 
     };
 
@@ -923,6 +933,52 @@ const fullName =
     alert('Något gick fel.');
 
   }
+}
+
+
+async function loadPendingInvites() {
+
+  if (!currentGroupId) return;
+
+  const { data, error } =
+    await supabaseClient
+      .from('group_invites')
+      .select('*')
+      .eq('group_id', currentGroupId)
+      .eq('accepted', false);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  const div =
+    document.getElementById('pendingInvites');
+
+  div.innerHTML = '';
+
+  if (data.length === 0) {
+
+    div.innerHTML =
+      '<em>Inga väntande inbjudningar</em>';
+
+    return;
+  }
+
+  data.forEach(invite => {
+
+    div.innerHTML += `
+      <div class="invite-row">
+
+        ⏳ ${invite.first_name}
+        ${invite.last_name}
+        (${invite.username})
+
+      </div>
+    `;
+
+  });
+
 }
   
 function render() {
