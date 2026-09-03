@@ -149,7 +149,9 @@ font-weight: 600;
 }
 </style>
 </head>
-
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+  
 <body>
 
 <h1>💸 SplitApp</h1>
@@ -245,6 +247,25 @@ placeholder="Användarnamn">
 <h3>✅ Vem ska betala vem?</h3>
 <div id="settlements"></div>
 </div>
+
+  @media (max-width: 768px) {
+
+  .container {
+    padding: 12px;
+  }
+
+  input,
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+}
 
 <script>
 
